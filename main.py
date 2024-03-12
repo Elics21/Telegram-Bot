@@ -1,40 +1,61 @@
 import  telebot
-from  telebot import  types
+
+import  sqlite3
 
 bot = telebot.TeleBot("7017326687:AAEC8O6BS3YrvQbOnOcdFo6IpSLocMKG7DY")
 
 @bot.message_handler(commands=["start"])
 def start(message):
-    markup = types.ReplyKeyboardMarkup()
-    btn1 = types.KeyboardButton("Магазин")
-    btn2 = types.KeyboardButton("Информация")
-    markup.row(btn1)
-    markup.row(btn2)
-    bot.send_message(message.chat.id, "Наше меню:", reply_markup=markup)
-    bot.register_next_step_handler(message, on_click)
+    conn = sqlite3.connect("base.sql")
+    cur = conn.cursor()
 
-def on_click(message):
-    if message.text == "Информация":
-        bot.send_message(message.chat.id, "information")
-    elif message.text == "Магазин":
-        bot.send_message(message.chat.id, "store: ")
+    cur.execute("CREATE TABLE IF NOT EXISTS users (id int auto_increment primary key, name varchar(50), pass varchar(50))")
+    conn.commit()
+    cur.close()
+    conn.close()
+    bot.send_message(message.chat.id, "Привет! Ввведите имя")
+    bot.register_next_step_handler(message, user_name)
 
-@bot.message_handler(commands=["help"])
-def main(message):
-    markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton("Перейти на сайт", url="https://www.youtube.com")
-    markup.row(btn1)
-    btn2 = types.InlineKeyboardButton("Удалиить сообщение", callback_data="delete")
-    btn3 = types.InlineKeyboardButton("Bpvtybnm сообщение", callback_data="edit")
-    markup.row(btn2, btn3)
-    bot.send_message(message.chat.id, "Крутой сайт!", reply_markup=markup)
+def user_name(message):
+    name = message.text.strip()
 
-@bot.callback_query_handler(func=lambda callback: True)
-def callback_message(callback):
-    if callback.data == "delete":
-        bot.delete_message(callback.message.chat.id, callback.message.message_id)
-    elif callback.data == "edit":
-        bot.edit_message_text("eding text", callback.message.chat.id, callback.message.message_id)
+    bot.send_message(message.chat.id, "Ввведите пароль")
+    bot.register_next_step_handler(message, user_pass, name)
 
+def  user_pass(message, name):
+    password = message.text.strip()
+
+    conn = sqlite3.connect("base.sql")
+    cur = conn.cursor()
+
+    cur.execute("INSERT INTO users (name, pass) VALUES ('%s', '%s')" % (name, password))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    markup = telebot.types.InlineKeyboardMarkup()
+    btn1 = telebot.types.InlineKeyboardButton("Список пользователей", callback_data="user_list")
+    markup.add(btn1)
+
+    bot.send_message(message.chat.id, "Вы зарегистрированы", reply_markup=markup)
+    bot.register_next_step_handler(message, user_pass)
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback(call):
+    if call.data == "user_list":
+        conn = sqlite3.connect("base.sql")
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM users")
+        users = cur.fetchall()
+
+        info = ""
+        for el in users:
+            info += f"Имя: {el[1]}, Пароль: {el[2]}\n"
+
+        cur.close()
+        conn.close()
+
+        bot.send_message(call.message.chat.id, info)
 
 bot.polling(non_stop=True)

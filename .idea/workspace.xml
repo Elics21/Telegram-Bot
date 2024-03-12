@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b840205f-9ca2-4f09-a912-72bed553cdcb" name="Changes" comment="base command bot">
+    <list default="true" id="b840205f-9ca2-4f09-a912-72bed553cdcb" name="Changes" comment="base menu bot">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -54,7 +54,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Python.main.executor": "Debug",
+    "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "develop"
@@ -108,7 +108,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710133728432</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="base menu bot">
+      <option name="closed" value="true" />
+      <created>1710219158116</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1710219158116</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -116,6 +124,7 @@
     <MESSAGE value="change gitignore" />
     <MESSAGE value="crate main.py" />
     <MESSAGE value="base command bot" />
-    <option name="LAST_COMMIT_MESSAGE" value="base command bot" />
+    <MESSAGE value="base menu bot" />
+    <option name="LAST_COMMIT_MESSAGE" value="base menu bot" />
   </component>
 </project>
